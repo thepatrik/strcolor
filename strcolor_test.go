@@ -78,9 +78,15 @@ func TestPrintDisabledColors(t *testing.T) {
 }
 
 func TestPrintPadding(t *testing.T) {
-	s := fmt.Sprintf("Is this %10s correctly?\n", strcolor.Red("padded"))
-	fmt.Println(s)
+	s := fmt.Sprintf("Is this %10s correctly?\n", strcolor.Yellow("padded"))
+	fmt.Print(s)
 	if len(s) != 39 {
-		t.Error("padding is not correct", len(s))
+		t.Error("padding is not correct", s)
+	}
+
+	s = fmt.Sprintf("%-20s%s\n", strcolor.Blue("And"), strcolor.White("this?"))
+	fmt.Print(s)
+	if len(s) != 44 {
+		t.Error("padding is not correct", s)
 	}
 }

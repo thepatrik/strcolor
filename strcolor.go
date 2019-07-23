@@ -29,6 +29,7 @@ var (
 )
 
 var (
+	flags = "-+# 0"
 	esc   = "\033["
 	clear = esc + "0m"
 )
@@ -66,6 +67,12 @@ func (sc StrColor) Format(s fmt.State, verb rune) {
 		format = append(sc.Color)
 	}
 	format = append(format, '%')
+	var f byte
+	for i := 0; i < len(flags); i++ {
+		if f = flags[i]; s.Flag(int(f)) {
+			format = append(format, f)
+		}
+	}
 	var width, prec int
 	var ok bool
 	if width, ok = s.Width(); ok {

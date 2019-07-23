@@ -1,6 +1,10 @@
 package strcolor
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"unicode/utf8"
+)
 
 var (
 	// normal colors
@@ -47,11 +51,38 @@ type StrColor struct {
 	Color []byte
 }
 
-func (c StrColor) String() string {
+func (sc StrColor) String() string {
 	if enabled {
-		return esc + string(c.Color) + fmt.Sprint(c.Val) + clear
+		return esc + string(sc.Color) + fmt.Sprint(sc.Val) + clear
 	}
-	return fmt.Sprint(c.Val)
+	return fmt.Sprint(sc.Val)
+}
+
+// Format enables a custom formatter
+func (sc StrColor) Format(s fmt.State, verb rune) {
+	format := make([]byte, 0, 128)
+	if enabled {
+		format = append(format, esc...)
+		format = append(sc.Color)
+	}
+	format = append(format, '%')
+	var width, prec int
+	var ok bool
+	if width, ok = s.Width(); ok {
+		format = strconv.AppendInt(format, int64(width), 10)
+	}
+	if prec, ok = s.Precision(); ok {
+		format = append(format, '.')
+		format = strconv.AppendInt(format, int64(prec), 10)
+	}
+	if verb > utf8.RuneSelf {
+		format = append(format, string(verb)...)
+	} else {
+		format = append(format, byte(verb))
+	}
+
+	format = append(format, clear...)
+	fmt.Fprintf(s, string(format), sc.Val)
 }
 
 // Black string color

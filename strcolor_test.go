@@ -76,3 +76,11 @@ func TestPrintDisabledColors(t *testing.T) {
 	fmt.Printf("Is %s color default?\n", strcolor.Cyan("this"))
 	fmt.Printf("Is %s color default?\n", strcolor.White("this"))
 }
+
+func TestPrintPadding(t *testing.T) {
+	s := fmt.Sprintf("Is this %10s correctly?\n", strcolor.Red("padded"))
+	fmt.Println(s)
+	if len(s) != 39 {
+		t.Error("padding is not correct", len(s))
+	}
+}

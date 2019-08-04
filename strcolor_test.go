@@ -3,10 +3,17 @@ package strcolor_test
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/thepatrik/strcolor"
 )
+
+func TestMain(m *testing.M) {
+	strcolor.SetEnabled(true)
+	code := m.Run()
+	os.Exit(code)
+}
 
 func TestReadmeUsage(t *testing.T) {
 	// colorize a print...

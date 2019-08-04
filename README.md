@@ -43,7 +43,7 @@ func main() {
 	buffer.WriteString(strcolor.Cyan(quote).String() + " /" + author)
 	fmt.Println(buffer.String())
 
-	// coloring can be disabled...
+	// coloring can be programmatically enabled/disabled (enabled by default on TTY character devices)...
 	strcolor.SetEnabled(false)
 	defer strcolor.SetEnabled(true)
 	fmt.Println(strcolor.Magenta("I prefer living in color."))

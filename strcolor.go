@@ -2,6 +2,7 @@ package strcolor
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"unicode/utf8"
 )
@@ -34,7 +35,27 @@ var (
 	clear = esc + "0m"
 )
 
-var enabled = true
+var enabled bool
+
+func init() {
+	// This is sort of cheating: if stdout is a character device, we
+	// assume that means it's a TTY. Unfortunately, there are many
+	// non-TTY character devices, but fortunately stdout is rarely set
+	// to any of them.
+	//
+	// This could be solved properly by pulling in a dependency on
+	// code.google.com/p/go.crypto/ssh/terminal, but as a heuristic for
+	// whether to print in color or in black-and-white, let's not.
+	isTTY := func() bool {
+		fi, err := os.Stdout.Stat()
+		if err == nil {
+			m := os.ModeDevice | os.ModeCharDevice
+			return fi.Mode()&m == m
+		}
+		return false
+	}()
+	enabled = isTTY
+}
 
 // SetEnabled controls if colors are enabled or not
 func SetEnabled(b bool) {

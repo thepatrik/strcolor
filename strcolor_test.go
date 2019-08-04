@@ -31,8 +31,9 @@ func TestReadmeUsage(t *testing.T) {
 	fmt.Println(buffer.String())
 
 	// coloring can be disabled...
+	enabled := strcolor.Enabled()
+	defer strcolor.SetEnabled(enabled)
 	strcolor.SetEnabled(false)
-	defer strcolor.SetEnabled(true)
 	fmt.Println(strcolor.Magenta("I prefer living in color."))
 }
 
@@ -62,11 +63,12 @@ func TestPrintDisabledColors(t *testing.T) {
 	if !strcolor.Enabled() {
 		t.Error("should be enabled")
 	}
+	enabled := strcolor.Enabled()
+	defer strcolor.SetEnabled(enabled)
 	strcolor.SetEnabled(false)
 	if strcolor.Enabled() {
 		t.Error("should be not be enabled")
 	}
-	defer strcolor.SetEnabled(true)
 	fmt.Printf("Is %s color default?\n", strcolor.Black("this"))
 	fmt.Printf("Is %s color default?\n", strcolor.Red("this"))
 	fmt.Printf("Is %s color default?\n", strcolor.Green("this"))

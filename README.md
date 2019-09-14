@@ -4,14 +4,14 @@
 Golang library for printing with standard ANSI colors.
 
 #### install
-```
+```Golang
 import "github.com/thepatrik/strcolor"
 ```
 
 ## Usage
 
 Colorize fmt/log prints:
-```
+```Golang
 package main
 
 import (
